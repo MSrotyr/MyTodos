@@ -1,8 +1,6 @@
-const { Schema } = require('mongoose');
+const mongoose = require('mongoose');
 
-const mongoose = require('./index');
-
-const userSchema = Schema({
+const userSchema = new mongoose.Schema({
   firstName: {
     type: String,
     required: true,
@@ -24,7 +22,7 @@ const userSchema = Schema({
     default: '',
   },
   lists: {
-    type: [{ type: Schema.Types.ObjectId, ref: 'List' }],
+    type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'List' }],
     required: true,
     default: [],
   },
