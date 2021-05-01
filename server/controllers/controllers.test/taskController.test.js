@@ -22,8 +22,9 @@ describe('Adding new tasks', () => {
   beforeAll(async () => {
     const url = `mongodb://127.0.0.1/${databaseName}`;
     await mongoose.connect(url, { useNewUrlParser: true });
-    const request = supertest(app);
+  });
 
+  beforeEach(async () => {
     userId = await request.post('/users').send(mockUser);
     userId = userId.body._id;
     listId = await request.post(`/users/${userId}/lists`).send({
@@ -42,14 +43,32 @@ describe('Adding new tasks', () => {
     const thisList = await List.findById(listId);
     const sectionId = thisList.sections[0]._id;
 
-    const title = 'This is a test task';
+    const title1 = 'This is a test task';
+    const title2 = 'This is another test task';
 
-    const taskRes = await request
+    await request
       .post(`/users/${userId}/lists/${listId}/sections/${sectionId}/tasks`)
-      .send({ title });
+      .send({ title: title1 });
+    await request
+      .post(`/users/${userId}/lists/${listId}/sections/${sectionId}/tasks`)
+      .send({ title: title2 });
 
-    const task = await Task.findOne({ title });
-    expect(task.title).toBe(title);
+    const task1 = await Task.findOne({ title: title1 });
+    expect(task1.title).toBe(title1);
+    const task2 = await Task.findOne({ title: title2 });
+    expect(task2.title).toBe(title2);
+    done();
+  });
+
+  it('should not save a task to the database if no title is passed in the body', async done => {
+    const thisList = await List.findById(listId);
+    const sectionId = thisList.sections[0]._id;
+
+    const res = await request.post(`/users/${userId}/lists/${listId}/sections/${sectionId}/tasks`);
+
+    const tasks = await Task.find();
+    expect(res.status).toBe(500);
+    expect(tasks).toHaveLength(0);
     done();
   });
 });
