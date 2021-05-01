@@ -91,7 +91,7 @@ describe('Adding existing tasks', () => {
     taskId = await request
       .post(`/users/${userId}/lists/${listId}/sections/${sectionId}/tasks`)
       .send({ title: 'title' });
-    taskId = taskId.body[0]._id;
+    taskId = taskId.body[0].sections[0].tasks[0]._id;
   });
 
   afterEach(async () => {
@@ -111,8 +111,43 @@ describe('Adding existing tasks', () => {
       .send({ taskId });
 
     const curList = await List.findById(listId);
-    const receivedTaskId = curList.sections[1].tasks[0]._id.toString();
-    expect(receivedTaskId).toStrictEqual(taskId);
+    const newTaskId = curList.sections[1].tasks[0]._id.toString();
+    expect(newTaskId).toBe(taskId);
+    done();
+  });
+});
+
+describe('Updating task', () => {
+  beforeAll(async () => {
+    const url = `mongodb://127.0.0.1/${databaseName}`;
+    await mongoose.connect(url, { useNewUrlParser: true });
+  });
+
+  beforeEach(async () => {
+    userId = await request.post('/users').send(mockUser);
+    userId = userId.body._id;
+    listId = await request.post(`/users/${userId}/lists`).send({ title: 'title' });
+    listId = listId.body[0]._id;
+    const curList = await List.findById(listId);
+    sectionId = curList.sections[0]._id;
+    taskId = await request
+      .post(`/users/${userId}/lists/${listId}/sections/${sectionId}/tasks`)
+      .send({ title: 'title' });
+    taskId = taskId.body[0].sections[0].tasks[0]._id;
+  });
+
+  afterEach(async () => {
+    await User.deleteMany();
+    await List.deleteMany();
+    await Task.deleteMany();
+  });
+
+  it('should update a task', async done => {
+    const title = 'New title';
+    const res = await request.put(`/users/${userId}/tasks/${taskId}`).send({ title });
+
+    const task = await Task.findById(taskId);
+    expect(task.title).toBe(title);
     done();
   });
 });
