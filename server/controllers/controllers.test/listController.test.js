@@ -44,6 +44,7 @@ describe('Integration tests', () => {
       title: "Larry's Todos",
       color: 'pink',
       sections: [],
+      //Using strings for id because server returns in JSON
       userId: mockUser.id,
       _id: expect.any(String),
     }
@@ -74,10 +75,24 @@ describe('Integration tests', () => {
     expect(list).toEqual(expect.objectContaining({
       title: 'My list',
       color: 'default',
-      _id: expect.any(Object),
       sections: expect.any(Array),
+      //Using objects for id because retrieving from database
+      _id: expect.any(Object),
       userId: mockUser._id,
     }));
     expect(status).toBe(201)
   })
+
+  it('Should re-order lists', async () => {
+    const list1 = await List.create({userId: mockUser._id, title: 'Another List'});
+    const list2 = await List.create({userId: mockUser._id, title: 'Another List again'});
+
+    const {body, status} = await request.put(`/users/${mockUser._id}/lists`)
+      .send({lists: [list2, list1, mockList]});
+    expect(body).toEqual([list2.id, list1.id, mockList.id]);
+    expect(status).toBe(200);
+  })
+
 });
+
+
