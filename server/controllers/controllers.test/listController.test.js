@@ -5,10 +5,12 @@ const mongoose = require('mongoose');
 const router = require('../../router');
 const List = require('../../models/list');
 const User = require('../../models/user');
+const Task = require('../../models/task');
 
 const databaseName = 'test';
+const badId = 'badId'
 
-describe('Integration tests', () => {
+describe('List Controller Tests', () => {
   const app = express();
   app.use(express.json());
   app.use(router);
@@ -31,19 +33,22 @@ describe('Integration tests', () => {
         lists: [],
       }
     );
-
     mockList = await List.create(
       {
         title: "Larry's Todos",
         color: 'pink',
         userId: mockUser._id,
+        sections: [{
+          title: "Larry's section",
+          tasks: []
+        }],
       }
     );
 
     mockListObj =  {
       title: "Larry's Todos",
       color: 'pink',
-      sections: [],
+      sections: expect.any(Array),
       //Using strings for id because server returns in JSON
       userId: mockUser.id,
       _id: expect.any(String),
@@ -63,9 +68,12 @@ describe('Integration tests', () => {
   })
 
   it('Should get lists', async () => {
-    const {body, status} = await request.get(`/users/${mockUser._id}/lists`)
+    let {body, status} = await request.get(`/users/${mockUser._id}/lists`)
     expect(body).toContainEqual(expect.objectContaining(mockListObj));
     expect(status).toBe(200);
+
+    const badRequest = await request.get(`/users/${badId}/lists`)
+    expect(badRequest.status).toBe(500);
   });
 
   it('Should add lists', async () => {
@@ -93,6 +101,48 @@ describe('Integration tests', () => {
     expect(status).toBe(200);
   })
 
+  it('Should update task order', async () => {
+
+    async function genTasks (...titles) {
+      const tasks = [];
+      for (let title of titles) {
+        const task = await Task.create(
+          {
+            title,
+            user: mockUser._id,
+            lists: [mockList._id],
+          }
+        );
+        tasks.push(task.id)
+      }
+      return tasks
+    }
+
+    const tasks = await genTasks('Title 1', 'Title 2', 'Title 3');
+    mockList.sections[0].tasks = tasks;
+    await mockList.save()
+    mockList.sections[0].tasks = [
+      tasks[2],
+      tasks[0],
+      tasks[1],
+    ]
+    const {body, status} = await request
+      .put(`/users/${mockUser._id}/lists/${mockList.id}/order`)
+      .send({sections: mockList.sections})
+
+    expect(String(mockList.sections[0].tasks[0])).toBe(tasks[2]);
+    expect(String(mockList.sections[0].tasks[1])).toBe(tasks[0]);
+    expect(String(mockList.sections[0].tasks[2])).toBe(tasks[1]);
+    expect(status).toBe(200);
+  })
+
+  it('Should delete the list', async () => {
+    const {status} = await request
+    .delete(`/users/${mockUser._id}/lists/${mockList.id}`)
+    const list = await List.findById(mockList._id);
+    expect(list).toEqual(null);
+    expect(status).toBe(200);
+  });
 });
 
 
