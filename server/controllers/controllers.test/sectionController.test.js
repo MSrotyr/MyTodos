@@ -15,7 +15,7 @@ describe('Integration tests', () => {
   const request = supertest(app)
   let mockUser
   let mockList
-  let mockSection
+
 
   beforeAll(async () => {
     const url = `mongodb://127.0.0.1/${dbName}`
@@ -36,15 +36,9 @@ describe('Integration tests', () => {
       userId: mockUser.id,
     })
 
-//  mockList('/users/:userId/lists/:listId/sections')
-//     mockSection = await List.sections.create({
-//       title: 'add section',
-//       isDefaultSection: true,
-//       tasks: [],
-//     })
-//     console.log("mockSection", mockSection)
+
     mockUser.lists.push(mockList)
-    // mockList.sections.push(mockSection)
+
     await mockUser.save()
   })
 
