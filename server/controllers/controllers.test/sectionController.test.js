@@ -8,7 +8,7 @@ const mongoose = require('mongoose')
 
 const dbName = 'test'
 
-describe('Integration tests', () => {
+describe('Section controller tests', () => {
   const app = express()
   app.use(express.json())
   app.use(router)
