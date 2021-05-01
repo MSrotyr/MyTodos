@@ -16,8 +16,9 @@ describe('Integration tests', () => {
 
   let mockUser;
   let mockList;
+  let mockListObj;
 
-  beforeAll(async () => {
+  beforeEach(async () => {
     const url = `mongodb://127.0.0.1/${databaseName}`;
     mongoose.connect(url, {useNewUrlParser: true, useUnifiedTopology: true});
 
@@ -35,28 +36,48 @@ describe('Integration tests', () => {
       {
         title: "Larry's Todos",
         color: 'pink',
-        sections: [],
-        userId: mockUser.id,
+        userId: mockUser._id,
       }
     );
 
-    mockUser.lists.push(mockList.id);
+    mockListObj =  {
+      title: "Larry's Todos",
+      color: 'pink',
+      sections: [],
+      userId: mockUser.id,
+      _id: expect.any(String),
+    }
+
+    mockUser.lists.push(mockList._id);
     await mockUser.save();
   });
 
   afterEach(async () => {
     await List.deleteMany();
     await User.deleteMany();
-    mongoose.connection.close();
   });
 
-  it('Should get lists', async (done) => {
-    const {body} = await request.get(`/users/${mockUser.id}/lists`)
-      .expect('Content-Type', /json/)
-      .expect(200);
-    expect(body[0].title).toBe(mockList.title);
-    expect(body[0].color).toBe(mockList.color);
-    expect(body[0].userId).toEqual(String(mockList.userId));
-    done();
+  afterAll(async () => {
+    mongoose.connection.close();
+  })
+
+  it('Should get lists', async () => {
+    const {body, status} = await request.get(`/users/${mockUser._id}/lists`)
+    expect(body).toContainEqual(expect.objectContaining(mockListObj));
+    expect(status).toBe(200);
   });
+
+  it('Should add lists', async () => {
+    const {body, status} = await request.post(`/users/${mockUser._id}/lists`)
+      .send({title: 'My list'})
+    const list = await List.findById(body[0]._id);
+    expect(list).toEqual(expect.objectContaining({
+      title: 'My list',
+      color: 'default',
+      _id: expect.any(Object),
+      sections: expect.any(Array),
+      userId: mockUser._id,
+    }));
+    expect(status).toBe(201)
+  })
 });
