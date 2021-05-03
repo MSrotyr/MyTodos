@@ -17,7 +17,7 @@ async function addUser(req, res) {
     } = req.body;
 
     try {
-      const preExistingUser = await user.findOne({email, password})
+      const preExistingUser = await user.findOne({email})
       if (preExistingUser) {
         res.status(409)
         res.send({ message: 'Cannot create user'})
