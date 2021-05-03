@@ -5,17 +5,17 @@
 .AddTask {
   padding: 0.5rem 2.15rem;
 }
-form {
+.AddTask__form {
   display: flex;
   align-items: center;
 }
 
-input[type="text"] {
+.AddTask_input {
   font-size: 1rem;
   width: 100%;
   border: none;
 }
-input[type="text"]:focus {
+.AddTask_input:focus {
   border: none;
   outline: none;
 }

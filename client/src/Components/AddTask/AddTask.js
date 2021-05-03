@@ -83,9 +83,10 @@ export function AddTask({ listId, sectionId }) {
 
   return (
     <div className="AddTask">
-      <form onSubmit={handleSubmit}>
+      <form className="AddTask__form" onSubmit={handleSubmit}>
         <div className="AddTask__plus-icon">+ </div>
         <input
+          className="AddTask__input"
           onChange={handleChange}
           value={taskTitle}
           type="text"
