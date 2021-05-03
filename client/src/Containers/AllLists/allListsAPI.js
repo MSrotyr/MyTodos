@@ -1,5 +1,5 @@
 const baseUrl = 'http://localhost:3001';
-const userId = '60871178721df63b1cbd1593';
+const userId = process.env.REACT_APP_USER_ID;
 
 export async function fetchAllLists() {
   try {
