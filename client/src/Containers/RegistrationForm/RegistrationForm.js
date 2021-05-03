@@ -1,7 +1,9 @@
 import './RegistrationForm.css';
 import React, { useState } from 'react';
 
-function RegistrationForm({ createHandler }) {
+const baseUrl = 'http://localhost:3001';
+
+function RegistrationForm({ registrationHandler }) {
   const [user, setUser] = useState({
     firstName: '', lastName: '', email: '', password: '',
   });
@@ -10,11 +12,23 @@ function RegistrationForm({ createHandler }) {
     e.preventDefault();
 
     // api call
-    await createHandler(user);
-    // reset form
-    setUser({
-      firstName: '', lastName: '', email: '', password: '',
-    });
+    try {
+      const res = await fetch(`${baseUrl}/users/`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(user),
+      });
+      const response = await res.json();
+      console.log(response);
+      if (response._id) {
+        registrationHandler(response._id);
+        setUser({
+          firstName: '', lastName: '', email: '', password: '',
+        });
+      }
+    } catch (error) {
+      console.error(error); // eslint-disable-line
+    }
   };
 
   return (
