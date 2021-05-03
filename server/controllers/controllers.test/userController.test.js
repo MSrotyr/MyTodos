@@ -38,9 +38,26 @@ describe('User controller tests', () => {
     expect(user1.password).toBe(mockUser.password);
   });
 
+
+  it('Should not create a user if the email already exists', async () => {
+    await request.post('/users/').send(mockUser);
+    const {body, status} = await request.post('/users/').send(mockUser);
+
+    expect(body.message).toBe('Cannot create user')
+    expect(status).toBe(409);
+  })
+
+  it('should not create user if the credentials are undefined ', async () => {
+    const {body, status} = await request.post('/users/').send({});
+    expect(body.message).toBe('Invalid body')
+    expect(status).toBe(400)
+
+    const user1 = await User.findOne({ firstName: mockUser.firstName });
+    expect(user1).toBeFalsy();
+  });
+
   it('Should login the user if the user exists', async () => {
     await User.create(mockUser)
-    user = await User.find({email: mockUser.email})
     const {body, status} = await request.post('/users/login')
       .send({email: mockUser.email, password: mockUser.password})
       expect(body).toEqual(expect.objectContaining(
@@ -49,5 +66,22 @@ describe('User controller tests', () => {
           message: 'Successfully Logged in user'
         }
       ));
+      expect(status).toBe(200);
+  })
+
+  it('Should not login in the user if credentials are undefined', async () => {
+    await User.create(mockUser);
+    const {body, status} = await request.post('/users/login')
+      .send({});
+      expect(body.message).toBe('Invalid body')
+      expect(status).toBe(400)
+  })
+
+  it('Should not login in the user if credentials are incorrect', async () => {
+    await User.create(mockUser);
+    const {body, status} = await request.post('/users/login')
+      .send({email: 'Wrong email', password: 'Wrong password'})
+      expect(body.message).toBe('Failed to Login user')
+      expect(status).toBe(401)
   })
 });
