@@ -1,21 +1,21 @@
-.AllLists {
-  height: 100%;
+/* .AllLists {
+  /* height: 100%;
   min-height: 100%;
   overflow: auto;
   display: flex;
   flex-direction: column;
-  border-right: 1px solid gray;
+  border-right: 1px solid gray; */
   /* padding: 0 1rem; */
-  text-align: left;
+  /* text-align: left;
   width: 25%;
-  min-width: 220px;
-}
+  min-width: 220px; */
+/* } */
 
-.AllLists__loadingIndicator {
+/* .AllLists__loadingIndicator {
   margin: 0.5rem 0;
   font-size: 0.75rem;
-}
+} */
 
-[data-rbd-droppable-id="lists"] {
+/* [data-rbd-droppable-id="lists"] {
   margin: 0 !important;
-}
+} */

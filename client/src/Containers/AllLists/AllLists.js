@@ -75,7 +75,12 @@ export function AllLists() {
   return (
     <div className="AllLists">
       <h1 style={{ marginLeft: '1.1rem' }}>Lists</h1>
-      <div style={{ marginLeft: '1.2rem', marginBottom: '1rem' }} className="AllLists__loadingIndicator">{loadingIndicator}</div>
+      <div
+        style={{ marginLeft: '1.2rem', marginBottom: '1rem' }}
+        className="AllLists__loadingIndicator"
+      >
+        {loadingIndicator}
+      </div>
       <AddList addListHandler={addListAsync} />
       <DragDropContext
         onDragEnd={onDragEnd}
