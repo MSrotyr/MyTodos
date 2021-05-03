@@ -19,7 +19,6 @@ function RegistrationForm({ registrationHandler }) {
         body: JSON.stringify(user),
       });
       const response = await res.json();
-      console.log(response);
       if (response._id) {
         registrationHandler(response._id);
         setUser({
