@@ -48,7 +48,7 @@ function RegistrationForm({ createHandler }) {
           <input
             id="email"
             name="email"
-            onChange={(e) => { setUser({ ...user, eamil: e.target.value }); }}
+            onChange={(e) => { setUser({ ...user, email: e.target.value }); }}
             value={user.email}
             type="email"
           />
