@@ -1,5 +1,5 @@
 import './ListMenu.css';
-import React from 'react';
+import React, { useContext } from 'react';
 import IconButton from '@material-ui/core/IconButton';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
@@ -12,6 +12,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { useDispatch, useSelector } from 'react-redux';
 import { setShowAddSectionForm } from '../../Containers/SelectedList/selectedListSlice';
 import { deleteListAsync, selectCurrentList } from '../../Containers/AllLists/allListsSlice';
+import { UserIdContext } from '../../App'; // eslint-disable-line
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -28,6 +29,7 @@ export function ListMenu() {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   const anchorRef = React.useRef(null);
+  const userId = useContext(UserIdContext);
 
   const handleToggle = () => {
     setOpen((prevOpen) => !prevOpen);
@@ -70,7 +72,7 @@ export function ListMenu() {
   const currentList = useSelector(selectCurrentList);
   function deleteListClickHandler(e) {
     handleClose(e);
-    dispatch(deleteListAsync(currentList._id));
+    dispatch(deleteListAsync({ userId, listId: currentList._id }));
   }
   return (
     <div className={classes.root}>

@@ -1,5 +1,5 @@
 import './AddTask.css';
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AutocompleteItem } from '../AutocompleteItem/AutocompleteItem';
 import {
@@ -7,7 +7,7 @@ import {
   addExistingTaskAsync,
   selectTasksInOtherLists,
 } from '../../Containers/AllLists/allListsSlice';
-
+import { UserIdContext } from '../../App'; // eslint-disable-line
 // Mock to be replaced with state in redux store
 // TODO: Maybe move into Containers / Features since this is doing stuff now?
 
@@ -19,6 +19,7 @@ export function AddTask({ listId, sectionId }) {
   // TODO: Move this out into the Redux store
   const [matchingTasks, setMatchingTasks] = useState([]);
   const [showAlert, setShowAlert] = useState(false);
+  const userId = useContext(UserIdContext);
 
   function handleChange(e) {
     const { value } = e.target;
@@ -34,7 +35,7 @@ export function AddTask({ listId, sectionId }) {
 
   async function handleSubmit(e) {
     e.preventDefault();
-    const res = await dispatch(addNewTaskAsync({ title: taskTitle, listId, sectionId }));
+    const res = await dispatch(addNewTaskAsync({ userId, title: taskTitle, listId, sectionId })); // eslint-disable-line
     console.log(res);
     if (res) {
       setShowAlert(false);
@@ -46,7 +47,7 @@ export function AddTask({ listId, sectionId }) {
 
   async function handleAddExistingTask(e, taskDetails) {
     try {
-      await dispatch(addExistingTaskAsync(taskDetails));
+      await dispatch(addExistingTaskAsync({ userId, taskDetails }));
       setTask('');
       setMatchingTasks([]);
     } catch (error) {

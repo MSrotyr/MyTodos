@@ -1,11 +1,11 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import './AllLists.css';
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import styled from 'styled-components';
 import { ListItem } from '../../Components/ListItem/ListItem';
-import { AddList } from '../../Components/AddList/AddList';
+import { AddList } from '../../Components/AddList/AddList'; // eslint-disable-line
 import {
   fetchAllListsAsync,
   addListAsync,
@@ -13,6 +13,7 @@ import {
   selectLists,
   selectStatus,
 } from './allListsSlice';
+import { UserIdContext } from '../../App'; // eslint-disable-line
 
 const ListItemsWrap = styled.div`
 padding: 0.5rem;
@@ -23,11 +24,12 @@ background-color: ${(props) => (props.isDraggingOver ? 'rgb(250, 250, 250)' : 'w
 export function AllLists() {
   const lists = useSelector(selectLists);
   const status = useSelector(selectStatus);
+  const userId = useContext(UserIdContext);
 
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(fetchAllListsAsync());
+    dispatch(fetchAllListsAsync(userId));
   }, [dispatch]);
 
   let loadingIndicator;
@@ -61,7 +63,7 @@ export function AllLists() {
       return;
     }
 
-    dispatch(updateListsOrderAsync({ source, destination }));
+    dispatch(updateListsOrderAsync({ userId, lists: { source, destination } }));
   }
 
   const renderedLists = lists.map((list, index) => (
