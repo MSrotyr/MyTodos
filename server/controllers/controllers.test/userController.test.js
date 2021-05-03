@@ -5,7 +5,7 @@ const supertest = require('supertest');
 const User = require('../../models/user');
 
 const mongoose = require('mongoose');
-const databaseName = 'test';
+const databaseName = 'testUser';
 
 const app = express();
 app.use(express.json());

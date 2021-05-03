@@ -6,7 +6,7 @@ const List = require('../../models/list')
 
 const mongoose = require('mongoose')
 
-const dbName = 'test'
+const dbName = 'testSection'
 
 describe('Section controller tests', () => {
   const app = express()
