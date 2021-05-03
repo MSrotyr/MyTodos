@@ -7,7 +7,7 @@ const List = require('../../models/list');
 const Task = require('../../models/task');
 
 const mongoose = require('mongoose');
-const databaseName = 'test';
+const databaseName = 'testTask';
 
 const app = express();
 app.use(express.json());

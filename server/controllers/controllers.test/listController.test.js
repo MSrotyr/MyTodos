@@ -7,7 +7,7 @@ const List = require('../../models/list');
 const User = require('../../models/user');
 const Task = require('../../models/task');
 
-const databaseName = 'test';
+const databaseName = 'testList';
 const badId = 'badId'
 
 describe('List Controller Tests', () => {
