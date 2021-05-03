@@ -15,18 +15,26 @@ async function addUser(req, res) {
       email,
       password,
     } = req.body;
+
     try {
-      const newUser = await user.create({
-        firstName,
-        lastName,
-        email,
-        password,
-      });
-      res.status(201);
-      res.send({ message: 'Successfully created new user', _id: newUser._id }); // eslint-disable-line
+      const preExistingUser = await user.findOne({email, password})
+      if (preExistingUser) {
+        res.status(409)
+        res.send({ message: 'Cannot create user'})
+      }
+      else {
+        const newUser = await user.create({
+          firstName,
+          lastName,
+          email,
+          password,
+        });
+        res.status(201);
+        res.send({ message: 'Successfully created new user', _id: newUser._id });
+      }
     } catch (error) {
       res.status(500);
-      console.error(error); // eslint-disable-line
+      console.error(error);
     }
   }
 }
