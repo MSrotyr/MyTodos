@@ -30,4 +30,29 @@ async function addUser(req, res) {
     }
   }
 }
-module.exports = { addUser };
+
+async function loginUser(req, res) {
+  if (req.body.email === undefined || req.body.password === undefined) {
+    res.status(400);
+    res.send({ message: 'Invalid body' });
+  }
+  else {
+    const {email, password} = req.body;
+    try {
+      const userToLogin = await user.findOne({email, password});
+      if (userToLogin) {
+        res.status(200);
+        res.send({message: 'Successfully Logged in user', _id: userToLogin._id });
+      }
+      else {
+        res.status(401);
+        res.send({message: 'Failed to Login user' });
+      }
+    } catch (error) {
+      console.error(error);
+      res.status(500).send(error);
+    }
+  }
+}
+
+module.exports = { addUser, loginUser };

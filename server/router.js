@@ -1,6 +1,6 @@
 const express = require('express');
 
-const { addUser } = require('./controllers/userController');
+const { addUser, loginUser } = require('./controllers/userController');
 const {
   getLists,
   addList,
@@ -24,6 +24,7 @@ const router = express.Router();
 // Users
 router.post('/users', addUser);
 
+router.post('/users/login', loginUser);
 // Lists
 router.get('/users/:userId/lists', getLists);
 
