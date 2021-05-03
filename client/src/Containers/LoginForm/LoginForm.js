@@ -1,7 +1,9 @@
 import './LoginForm.css';
 import React, { useState } from 'react';
 
-function LoginForm({ LoginHandler }) {
+const baseUrl = 'http://localhost:3001';
+
+function LoginForm({ loginHandler }) {
   const [user, setUser] = useState({
     email: '', password: '',
   });
@@ -10,11 +12,22 @@ function LoginForm({ LoginHandler }) {
     e.preventDefault();
 
     // api call
-    await LoginHandler(user);
-    // reset form
-    setUser({
-      email: '', password: '',
-    });
+    try {
+      const res = await fetch(`${baseUrl}/users/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(user),
+      });
+      const response = await res.json();
+      if (response._id) {
+        loginHandler(response._id);
+      }
+      setUser({
+        email: '', password: '',
+      });
+    } catch (error) {
+      console.error(error); // eslint-disable-line
+    }
   };
 
   return (
