@@ -1,0 +1,15 @@
+.formDiv{
+    width:30vw;
+    height: 50vh;
+    margin: 1rem;
+    color:black;
+    font-weight: 600;
+    border-radius: 2px;
+}
+
+.form-submit, input{
+    width: 15vw;
+    height: 3vh;
+    margin: 1vh;
+
+}
