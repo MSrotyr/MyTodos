@@ -1,12 +1,18 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import './Task.css';
-import React, { useState, useEffect, useRef } from 'react';
+import React, {
+  useState,
+  useEffect,
+  useRef,
+  useContext,
+} from 'react';
 import { Draggable } from 'react-beautiful-dnd';
 import styled from 'styled-components';
 import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@material-ui/icons/CheckBox';
 import { useDispatch } from 'react-redux';
 import { setTaskTitle, updateTaskAsync } from '../../Containers/AllLists/allListsSlice';
+import { UserIdContext } from '../../App'; // eslint-disable-line
 
 const Container = styled.div`
 border-radius: 2px;
@@ -25,6 +31,7 @@ export function Task({
 }) {
   const dispatch = useDispatch();
   const [editing, setEditing] = useState(false);
+  const userId = useContext(UserIdContext);
 
   const textInput = useRef(null);
   useEffect(() => {
@@ -35,6 +42,7 @@ export function Task({
 
   function checkboxClickHandler() {
     dispatch(updateTaskAsync({
+      userId,
       taskId: id,
       payload: {
         complete: !complete,

@@ -1,7 +1,6 @@
 const baseUrl = 'http://localhost:3001';
-const userId = process.env.REACT_APP_USER_ID;
 
-export async function fetchAllLists() {
+export async function fetchAllLists(userId) {
   try {
     const res = await fetch(`${baseUrl}/users/${userId}/lists`);
     return await res.json();
@@ -11,7 +10,7 @@ export async function fetchAllLists() {
   }
 }
 
-export async function addList(title) {
+export async function addList(userId, title) {
   try {
     const res = await fetch(`${baseUrl}/users/${userId}/lists`, {
       method: 'POST',
@@ -25,7 +24,7 @@ export async function addList(title) {
   }
 }
 
-export async function updateListsOrderInDb(lists) {
+export async function updateListsOrderInDb(userId, lists) {
   try {
     const res = await fetch(`${baseUrl}/users/${userId}/lists`, {
       method: 'PUT',
@@ -39,7 +38,7 @@ export async function updateListsOrderInDb(lists) {
   }
 }
 
-export async function updateTasksOrderInDb(listId, sections) {
+export async function updateTasksOrderInDb(userId, listId, sections) {
   try {
     const res = await fetch(`${baseUrl}/users/${userId}/lists/${listId}/order`, {
       method: 'PUT',
@@ -53,7 +52,7 @@ export async function updateTasksOrderInDb(listId, sections) {
   }
 }
 
-export async function deleteList(listId) {
+export async function deleteList(userId, listId) {
   try {
     const res = await fetch(`${baseUrl}/users/${userId}/lists/${listId}`, {
       method: 'DELETE',
@@ -66,7 +65,7 @@ export async function deleteList(listId) {
   }
 }
 
-export async function addSection({ title, listId }) {
+export async function addSection(userId, { title, listId }) {
   try {
     const res = await fetch(`${baseUrl}/users/${userId}/lists/${listId}/sections/`, {
       method: 'POST',
@@ -80,7 +79,7 @@ export async function addSection({ title, listId }) {
   }
 }
 
-export async function deleteSection({ listId, sectionId }) {
+export async function deleteSection(userId, { listId, sectionId }) {
   try {
     const res = await fetch(`${baseUrl}/users/${userId}/lists/${listId}/sections/${sectionId}`, {
       method: 'DELETE',
@@ -93,7 +92,7 @@ export async function deleteSection({ listId, sectionId }) {
   }
 }
 
-export async function addNewTask({ title, listId, sectionId }) {
+export async function addNewTask(userId, { title, listId, sectionId }) {
   try {
     const res = await fetch(`${baseUrl}/users/${userId}/lists/${listId}/sections/${sectionId}/tasks`, {
       method: 'POST',
@@ -107,7 +106,7 @@ export async function addNewTask({ title, listId, sectionId }) {
   }
 }
 
-export async function addExistingTask({ taskId, listId, sectionId }) {
+export async function addExistingTask(userId, taskId, listId, sectionId) {
   try {
     const res = await fetch(`${baseUrl}/users/${userId}/lists/${listId}/sections/${sectionId}/tasks`, {
       method: 'PUT',
@@ -121,7 +120,7 @@ export async function addExistingTask({ taskId, listId, sectionId }) {
   }
 }
 
-export async function updateTask({ taskId, payload }) {
+export async function updateTask(userId, { taskId, payload }) {
   try {
     const res = await fetch(`${baseUrl}/users/${userId}/tasks/${taskId}`, {
       method: 'PUT',

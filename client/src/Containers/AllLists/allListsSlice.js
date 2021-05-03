@@ -29,30 +29,30 @@ const initialState = {
 export const fetchAllListsAsync = createAsyncThunk(
   'allLists/fetchAllLists',
   // The value we return becomes the `fulfilled` action payload
-  async () => fetchAllLists(),
+  async (userId) => fetchAllLists(userId),
 );
 
 export const addListAsync = createAsyncThunk(
   'allLists/addList',
   // The value we return becomes the `fulfilled` action payload
-  async (title) => addList(title),
+  async ({ userId, title }) => addList(userId, title),
 );
 
 export const updateListsOrderAsync = createAsyncThunk(
   'allLists/updateListsOrder',
   // The value we return becomes the `fulfilled` action payload
-  async (lists, { dispatch, getState }) => {
+  async ({ userId, lists }, { dispatch, getState }) => {
     // eslint-disable-next-line no-use-before-define
     await dispatch(updateListsOrder(lists));
     const updatedListIds = _.map(getState().allLists.lists, '_id');
-    updateListsOrderInDb(updatedListIds);
+    updateListsOrderInDb(userId, updatedListIds);
   },
 );
 
 export const updateTasksOrderAsync = createAsyncThunk(
   'allLists/updateTasksOrder',
   // The value we return becomes the `fulfilled` action payload
-  async (tasks, { dispatch, getState }) => {
+  async ({ userId, tasks }, { dispatch, getState }) => {
     // eslint-disable-next-line no-use-before-define
     await dispatch(updateTasksOrder(tasks));
     const currListId = getState().allLists.currentList._id;
@@ -63,14 +63,14 @@ export const updateTasksOrderAsync = createAsyncThunk(
       };
       return currSection;
     });
-    updateTasksOrderInDb(currListId, sections);
+    updateTasksOrderInDb(userId, currListId, sections);
   },
 );
 
 export const updateSectionsOrderAsync = createAsyncThunk(
   'allLists/updateSectionsOrder',
   // The value we return becomes the `fulfilled` action payload
-  async (sections, { dispatch, getState }) => {
+  async ({ userId, sections }, { dispatch, getState }) => {
     // eslint-disable-next-line no-use-before-define
     await dispatch(updateSectionsOrder(sections));
     const currListId = getState().allLists.currentList._id;
@@ -81,44 +81,47 @@ export const updateSectionsOrderAsync = createAsyncThunk(
       };
       return currSection;
     });
-    updateTasksOrderInDb(currListId, updatedSections);
+    updateTasksOrderInDb(userId, currListId, updatedSections);
   },
 );
 
 export const deleteListAsync = createAsyncThunk(
   'allLists/deleteList',
   // The value we return becomes the `fulfilled` action payload
-  async (listId) => deleteList(listId),
+  async ({ userId, listId }) => deleteList(userId, listId),
 );
 
 export const addSectionAsync = createAsyncThunk(
   'allLists/addSection',
   // The value we return becomes the `fulfilled` action payload
-  async ({ title, listId }) => addSection({ title, listId }),
+  async ({ userId, title, listId }) => addSection(userId, { title, listId }),
 );
 
 export const deleteSectionAsync = createAsyncThunk(
   'allLists/deleteSection',
   // The value we return becomes the `fulfilled` action payload
-  async ({ sectionId, listId }) => deleteSection({ sectionId, listId }),
+  async ({ userId, sectionId, listId }) => deleteSection(userId, { sectionId, listId }),
 );
 
 export const addNewTaskAsync = createAsyncThunk(
   'allLists/addNewTask',
   // The value we return becomes the `fulfilled` action payload
-  async ({ title, listId, sectionId }) => addNewTask({ title, listId, sectionId }),
+  async ({ userId, title, listId, sectionId }) => addNewTask(userId, { title, listId, sectionId }), // eslint-disable-line
 );
 
 export const addExistingTaskAsync = createAsyncThunk(
   'allLists/addExistingTask',
   // The value we return becomes the `fulfilled` action payload
-  async ({ taskId, listId, sectionId }) => addExistingTask({ taskId, listId, sectionId }),
+  async ({ userId, taskDetails }) => { // eslint-disable-line
+    const { taskId, listId, sectionId } = taskDetails;
+    return addExistingTask(userId, taskId, listId, sectionId);
+  },
 );
 
 export const updateTaskAsync = createAsyncThunk(
   'allLists/updateTask',
   // The value we return becomes the `fulfilled` action payload
-  async ({ taskId, payload }) => updateTask({ taskId, payload }),
+  async ({ userId, taskId, payload }) => updateTask(userId, { taskId, payload }),
 );
 
 export const allListsSlice = createSlice({

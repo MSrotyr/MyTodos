@@ -1,9 +1,10 @@
 import './AddList.css';
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useDispatch } from 'react-redux';
 import {
   addListAsync,
 } from '../../Containers/AllLists/allListsSlice';
+import { UserIdContext } from '../../App'; // eslint-disable-line
 
 // TODO: Move into Containers / Features since this is doing stuff now
 
@@ -12,6 +13,7 @@ export function AddList() {
 
   const [list, setList] = useState('');
   const [showAlert, setShowAlert] = useState(false);
+  const userId = useContext(UserIdContext);
 
   function handleChange(e) {
     const { value } = e.target;
@@ -19,7 +21,7 @@ export function AddList() {
   }
   async function handleSubmit(e) {
     e.preventDefault();
-    const res = await dispatch(addListAsync(list));
+    const res = await dispatch(addListAsync({ userId, title: list }));
     console.log(res);
     if (res) {
       setShowAlert(false);

@@ -1,9 +1,15 @@
 import './AddSection.css';
-import React, { useState, useEffect, useRef } from 'react';
+import React, {
+  useState,
+  useEffect,
+  useRef,
+  useContext,
+} from 'react';
 import { useDispatch } from 'react-redux';
 import {
   addSectionAsync,
 } from '../../Containers/AllLists/allListsSlice';
+import { UserIdContext } from '../../App'; // eslint-disable-line
 
 // TODO: Maybe move into Containers / Features since this is doing stuff now?
 
@@ -12,6 +18,7 @@ export function AddSection({ listId }) {
 
   const [section, setSection] = useState('');
   const [showAlert, setShowAlert] = useState(false);
+  const userId = useContext(UserIdContext);
 
   const textInput = useRef(null);
   useEffect(() => {
@@ -24,7 +31,7 @@ export function AddSection({ listId }) {
   }
   async function handleSubmit(e) {
     e.preventDefault();
-    const res = await dispatch(addSectionAsync({ title: section, listId }));
+    const res = await dispatch(addSectionAsync({ userId, title: section, listId }));
     console.log(res);
     if (res) {
       setShowAlert(false);

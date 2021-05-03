@@ -4,9 +4,9 @@ import './Section.css';
 import React from 'react';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
 import styled from 'styled-components';
-import { AddTask } from '../AddTask/AddTask';
-import { Task } from '../Task/Task';
-import { SectionMenu } from '../SectionMenu/SectionMenu';
+import { AddTask } from '../AddTask/AddTask'; // eslint-disable-line
+import { Task } from '../Task/Task'; // eslint-disable-line
+import { SectionMenu } from '../SectionMenu/SectionMenu'; // eslint-disable-line
 
 const SectionsWrap = styled.div`
   padding: 8px;
