@@ -14,6 +14,8 @@ function RegistrationForm({ registrationHandler }) {
     const response = await Register(user);
     if (response._id) {
       registrationHandler(response._id);
+    } else {
+      alert('Invalid email or password');
     }
     setUser({
       firstName: '', lastName: '', email: '', password: '',
@@ -28,8 +30,10 @@ function RegistrationForm({ registrationHandler }) {
         <div>
           <label htmlFor="firstName">firstName</label>
           <input
+            required="required"
             id="firstName"
             name="firstName"
+            placeholder="First name"
             onChange={(e) => { setUser({ ...user, firstName: e.target.value }); }}
             value={user.firstName}
             type="text"
@@ -39,18 +43,22 @@ function RegistrationForm({ registrationHandler }) {
         <div>
           <label htmlFor="lastName">lastName</label>
           <input
+            required="required"
             id="lastName"
             name="lastName"
+            placeholder="Last name"
             onChange={(e) => { setUser({ ...user, lastName: e.target.value }); }}
-            value={user.last}
+            value={user.lastName}
             type="text"
           />
         </div>
         <div>
           <label htmlFor="email">Email</label>
           <input
+            required="required"
             id="email"
             name="email"
+            placeholder="Email"
             onChange={(e) => { setUser({ ...user, email: e.target.value }); }}
             value={user.email}
             type="email"
@@ -60,15 +68,17 @@ function RegistrationForm({ registrationHandler }) {
         <div>
           <label htmlFor="password">password</label>
           <input
+            required="required"
             id="password"
             name="password"
             type="password"
+            placeholder="Password"
             value={user.password}
             onChange={(e) => { setUser({ ...user, password: e.target.value }); }}
           />
         </div>
 
-        <button type="submit">Register </button>
+        <button name="submit" type="submit">Register </button>
       </form>
     </div>
   );
