@@ -1,7 +1,6 @@
 import './RegistrationForm.css';
 import React, { useState } from 'react';
-
-const baseUrl = 'http://localhost:3001';
+import { Register } from './RegistrationAPI';
 
 function RegistrationForm({ registrationHandler }) {
   const [user, setUser] = useState({
@@ -12,22 +11,13 @@ function RegistrationForm({ registrationHandler }) {
     e.preventDefault();
 
     // api call
-    try {
-      const res = await fetch(`${baseUrl}/users/`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(user),
-      });
-      const response = await res.json();
-      if (response._id) {
-        registrationHandler(response._id);
-        setUser({
-          firstName: '', lastName: '', email: '', password: '',
-        });
-      }
-    } catch (error) {
-      console.error(error); // eslint-disable-line
+    const response = await Register(user);
+    if (response._id) {
+      registrationHandler(response._id);
     }
+    setUser({
+      firstName: '', lastName: '', email: '', password: '',
+    });
   };
 
   return (
