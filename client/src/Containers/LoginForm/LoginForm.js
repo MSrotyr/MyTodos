@@ -12,6 +12,7 @@ function LoginForm({ loginHandler }) {
 
     // api call
     const response = await Login(user);
+    console.log(response);
     if (response._id) {
       loginHandler(response._id);
     } else {
@@ -30,7 +31,7 @@ function LoginForm({ loginHandler }) {
         <div>
           <label htmlFor="email">Email</label>
           <input
-            id="email"
+            id="emailLogin"
             name="email"
             placeholder="email"
             onChange={(e) => { setUser({ ...user, email: e.target.value }); }}
@@ -40,9 +41,9 @@ function LoginForm({ loginHandler }) {
         </div>
 
         <div>
-          <label htmlFor="password">password</label>
+          <label htmlFor="password">Password</label>
           <input
-            id="password"
+            id="passwordLogin"
             name="password"
             type="password"
             placeholder="password"

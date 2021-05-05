@@ -33,7 +33,7 @@ async function addUser(req, res) {
         res.send({ message: 'Successfully created new user', _id: newUser._id });
       }
     } catch (error) {
-      res.status(500);
+      res.status(500).send({message: 'Server error'});
       console.error(error);
     }
   }
@@ -63,4 +63,14 @@ async function loginUser(req, res) {
   }
 }
 
-module.exports = { addUser, loginUser };
+async function deleteCypressTestUser(req, res) {
+  const email = 'Cypress_Test_@Email.com';
+  try {
+    await user.deleteMany({ email });
+    res.status(200).send({message: 'User deleted'});
+  } catch (error) {
+    res.status(500).send(error);
+  }
+}
+
+module.exports = { addUser, loginUser, deleteCypressTestUser };

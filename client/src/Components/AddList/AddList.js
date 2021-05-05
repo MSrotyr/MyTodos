@@ -22,7 +22,6 @@ export function AddList() {
   async function handleSubmit(e) {
     e.preventDefault();
     const res = await dispatch(addListAsync({ userId, title: list }));
-    console.log(res);
     if (res) {
       setShowAlert(false);
       setList('');
@@ -42,6 +41,7 @@ export function AddList() {
       <form onSubmit={handleSubmit}>
         <span style={{ marginLeft: '2px' }}>+ </span>
         <input
+          id="addList"
           style={{ marginLeft: '4px' }}
           onChange={handleChange}
           value={list}

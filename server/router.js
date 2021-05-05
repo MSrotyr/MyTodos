@@ -1,6 +1,6 @@
 const express = require('express');
 
-const { addUser, loginUser } = require('./controllers/userController');
+const { addUser, loginUser, deleteCypressTestUser } = require('./controllers/userController');
 const {
   getLists,
   addList,
@@ -25,6 +25,8 @@ const router = express.Router();
 router.post('/users', addUser);
 
 router.post('/users/login', loginUser);
+
+router.delete('/users', deleteCypressTestUser);
 // Lists
 router.get('/users/:userId/lists', getLists);
 

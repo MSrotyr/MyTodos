@@ -36,7 +36,6 @@ export function AddTask({ listId, sectionId }) {
   async function handleSubmit(e) {
     e.preventDefault();
     const res = await dispatch(addNewTaskAsync({ userId, title: taskTitle, listId, sectionId })); // eslint-disable-line
-    console.log(res);
     if (res) {
       setShowAlert(false);
       setTask('');

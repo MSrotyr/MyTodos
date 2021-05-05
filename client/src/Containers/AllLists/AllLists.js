@@ -90,6 +90,7 @@ export function AllLists() {
         <Droppable droppableId="lists">
           {(provided, snapshot) => (
             <ListItemsWrap
+              id="listItem"
               ref={provided.innerRef}
               isDraggingOver={snapshot.isDraggingOver}
               {...provided.droppableProps}
