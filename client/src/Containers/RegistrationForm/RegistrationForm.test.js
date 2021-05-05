@@ -52,7 +52,7 @@ describe('Registration Form Tests', () => {
   it('Should not register and alert the user if the registration fails', async () => {
     window.alert = jest.fn();
     Register.mockImplementationOnce(() => (
-      { message: 'Cannot create user'}));
+      { message: 'Cannot create user' }));
     await act(async () => {
       userEvent.click(registerBtn);
     });
