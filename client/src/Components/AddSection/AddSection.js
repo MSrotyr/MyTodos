@@ -32,7 +32,6 @@ export function AddSection({ listId }) {
   async function handleSubmit(e) {
     e.preventDefault();
     const res = await dispatch(addSectionAsync({ userId, title: section, listId }));
-    console.log(res);
     if (res) {
       setShowAlert(false);
       setSection('');
@@ -51,6 +50,7 @@ export function AddSection({ listId }) {
     <div className="AddSection">
       <form onSubmit={handleSubmit}>
         <input
+          id="sectionName"
           className="AddSection__input"
           ref={textInput}
           onChange={handleChange}

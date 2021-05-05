@@ -22,7 +22,6 @@ export function AddList() {
   async function handleSubmit(e) {
     e.preventDefault();
     const res = await dispatch(addListAsync({ userId, title: list }));
-    console.log(res);
     if (res) {
       setShowAlert(false);
       setList('');

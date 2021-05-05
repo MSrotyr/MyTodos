@@ -12,6 +12,8 @@ function RegistrationForm({ registrationHandler }) {
 
     // api call
     const response = await Register(user);
+    console.log('trig');
+    console.log(response);
     if (response._id) {
       registrationHandler(response._id);
     } else {

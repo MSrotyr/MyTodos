@@ -78,6 +78,7 @@ export function ListMenu() {
     <div className={classes.root}>
       <div>
         <IconButton
+          id="sectionListControlButton"
           ref={anchorRef}
           aria-controls={open ? 'menu-list-grow' : undefined}
           aria-haspopup="true"
@@ -94,8 +95,8 @@ export function ListMenu() {
               <Paper>
                 <ClickAwayListener onClickAway={handleClose}>
                   <MenuList autoFocusItem={open} id="menu-list-grow" onKeyDown={handleListKeyDown}>
-                    <MenuItem onClick={addSectionClickHandler}>Add section</MenuItem>
-                    <MenuItem onClick={deleteListClickHandler}>Delete list</MenuItem>
+                    <MenuItem id="addSection" onClick={addSectionClickHandler}>Add section</MenuItem>
+                    <MenuItem id="deleteList" onClick={deleteListClickHandler}>Delete list</MenuItem>
                   </MenuList>
                 </ClickAwayListener>
               </Paper>
