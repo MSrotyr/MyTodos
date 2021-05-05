@@ -2,7 +2,7 @@ const baseUrl = 'http://localhost:3001';
 
 async function Login(user) {
   try {
-    const res = await fetch(`${baseUrl}/users/`, {
+    const res = await fetch(`${baseUrl}/users/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(user),

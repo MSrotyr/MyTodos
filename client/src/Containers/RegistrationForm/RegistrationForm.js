@@ -28,10 +28,10 @@ function RegistrationForm({ registrationHandler }) {
       <h1>Register</h1>
       <form onSubmit={submitHandler}>
         <div>
-          <label htmlFor="firstName">firstName</label>
+          <label htmlFor="firstName">First name</label>
           <input
             required="required"
-            id="firstName"
+            id="firstNameRegister"
             name="firstName"
             placeholder="First name"
             onChange={(e) => { setUser({ ...user, firstName: e.target.value }); }}
@@ -41,10 +41,10 @@ function RegistrationForm({ registrationHandler }) {
         </div>
 
         <div>
-          <label htmlFor="lastName">lastName</label>
+          <label htmlFor="lastName">Last name</label>
           <input
             required="required"
-            id="lastName"
+            id="lastNameRegister"
             name="lastName"
             placeholder="Last name"
             onChange={(e) => { setUser({ ...user, lastName: e.target.value }); }}
@@ -56,7 +56,7 @@ function RegistrationForm({ registrationHandler }) {
           <label htmlFor="email">Email</label>
           <input
             required="required"
-            id="email"
+            id="emailRegister"
             name="email"
             placeholder="Email"
             onChange={(e) => { setUser({ ...user, email: e.target.value }); }}
@@ -66,10 +66,10 @@ function RegistrationForm({ registrationHandler }) {
         </div>
 
         <div>
-          <label htmlFor="password">password</label>
+          <label htmlFor="password">Password</label>
           <input
             required="required"
-            id="password"
+            id="passwordRegister"
             name="password"
             type="password"
             placeholder="Password"

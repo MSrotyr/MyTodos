@@ -40,7 +40,8 @@
   "eslintConfig": {
     "env": {
       "browser": true,
-      "jest": true
+      "jest": true,
+      "cypress": true
     },
     "rules": {
       "no-alert": "off",
@@ -67,5 +68,8 @@
         }
       ]
     }
+  },
+  "devDependencies": {
+    "cypress": "^7.2.0"
   }
 }
